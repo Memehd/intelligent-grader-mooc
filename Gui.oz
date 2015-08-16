@@ -1,3 +1,4 @@
+%Author: Mehdi Dumoulin, EPL, UCL.
 functor
 import
    Main
@@ -34,15 +35,7 @@ define
 
 	 pause:=[_]
 
-	 Menu = menu(command(text:"Manual"
-			     action:proc{$}
-				       Desc=message(aspect:1000
-						    init:"Manual for users\n bla bla bla bla bla"
-						   )
-				    in 
-				       {{QTk.build td(Desc)} show}
-				    end)
-		     command(text:"New Exercise"
+	 Menu = menu(command(text:"New Exercise"
 			     action:proc{$} 
 				       NameExW NameExHandle EnonceHandle EnonceW NameProcW NameProcHandle InputHandle InputW OutputHandle OutputW ButtonSave ButtonSaveHandle Window2
 				       NameExW=text(init:"Enter name of exercise"
@@ -156,16 +149,15 @@ define
 								     end
 							      append:true)}
 				    end)
+		     separator
 		     command(text:"Save my code"
 			     action:proc{$}
 				       Result T in
 				       Result = {QTk.dialogbox save(defaultextension:".oz"
-								    %filetypes:q("All files" q("*"))
 								    initialdir:"."
 								    initialfile:"my_exercise"
 								    title:"Choice your location"
 								    $ )}
-				    %   {System.show Result}
 				       if {Not Result == nil} then
 					  T = {HandleTx get($)}
 					  if T == "Enter your source code here" then
@@ -198,6 +190,31 @@ define
 				       end
 				    end)
 		     separator
+		     command(text:"Help"
+			     action:proc{$}
+				       Desc=message(aspect:500
+						    init:"How use this grader without exercises:
+1. Write your code in the text area. Beware that your code must be in the OZ kernel language.
+2. Choose a delay if you want to apply a delay between each statement to execute. Otherwise choose zero second.
+3. Click on Scanner, Compile or Execute Button :
+				If you click on scanner button your source code is converted to a list of tokens.
+				If you click on compile button your source code is compiled if it has no error and the corresponding parse tree is displayed on the output area. It is has error(s) the area where the error is displayed.
+				If you click on execute button your source code is compiled.
+						If this step was successful a message is displayed and the source code is interpreted (with or without a delay).
+						If error is detected at the compilation the area where the error is displayed.
+											       
+The semantic stack and the assignment store are displayed as the execution progress in the source code. You can pause or cancel the execution of your source code. If an infinite loop is detected the execution is paused and a message appears in a pop-up to alert the user.
+ If the execution was successful a message is displayed. A message is also displayed if the source code contains a recursive procedure to inform whether the procedure is tail recursive or not.
+
+
+To use it with exercise, first choose an exercise in the list and then you can use this grader as explain above."
+						   )
+				       Wind
+				    in 
+				       Wind = {QTk.build td(Desc)}
+				       {Wind show}
+				       {Wind set(title:"Manual")}
+				    end)
 		     command(text:"Quit"
 			     action:toplevel#close))
 

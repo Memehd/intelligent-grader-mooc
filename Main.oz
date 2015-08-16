@@ -1,3 +1,4 @@
+%Author: Mehdi Dumoulin, EPL, UCL.
 functor
 import
    Gui	
